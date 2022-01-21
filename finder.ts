@@ -304,13 +304,15 @@ function notEmpty<T>(value: T | null | undefined): value is T {
   return value !== null && value !== undefined;
 }
 
-function* combinations(stack: Node[][], path: Node[] = []): Generator<Node[]> {
+function combinations(stack: Node[][], path: Node[] = []): Node[][] {
   if (stack.length > 0) {
-    for (let node of stack[0]) {
-      yield* combinations(stack.slice(1, stack.length), path.concat(node));
+    let results: Node[][] = [];
+    for (const node of stack[0]) {
+      results = results.concat(combinations(stack.slice(1, stack.length), path.concat(node)));
     }
+    return results;
   } else {
-    yield path;
+    return [path];
   }
 }
 
@@ -323,33 +325,35 @@ type Scope = {
   visited: Map<string, boolean>;
 };
 
-function* optimize(
+function optimize(
   path: Path,
   input: Element,
   scope: Scope = {
     counter: 0,
-    visited: new Map<string, boolean>(),
+    visited: new Map<string, boolean>()
   }
-): Generator<Node[]> {
+): Node[][] {
+  let results: Node[][] = [];
   if (path.length > 2 && path.length > config.optimizedMinLength) {
     for (let i = 1; i < path.length - 1; i++) {
       if (scope.counter > config.maxNumberOfTries) {
-        return; // Okay At least I tried!
+        return results; // Okay At least I tried!
       }
       scope.counter += 1;
       const newPath = [...path];
       newPath.splice(i, 1);
       const newPathKey = selector(newPath);
       if (scope.visited.has(newPathKey)) {
-        return;
+        return results;
       }
       if (unique(newPath) && same(newPath, input)) {
-        yield newPath;
+        results.push(newPath);
         scope.visited.set(newPathKey, true);
-        yield* optimize(newPath, input, scope);
+        results = results.concat(optimize(newPath, input, scope));
       }
     }
   }
+  return results;
 }
 
 function same(path: Path, input: Element) {
