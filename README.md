@@ -8,6 +8,8 @@
 
 > CSS Selector Generator
 
+## Note
+This repository is a fork of [@medv/finder](https://github.com/antonmedv/finder). The difference is that this repository doesn't use generators, which might not be supported by some older browsers, however functionality is the same (as v2.1.0 at the time of fork).
 ## Features
 
 * Generates **shortest** selectors
