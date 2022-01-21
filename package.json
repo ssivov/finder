@@ -1,11 +1,11 @@
 {
-  "name": "@medv/finder",
+  "name": "@ssivov/finder",
   "type": "module",
   "version": "2.1.1",
-  "description": "CSS Selector Generator",
-  "repository": "antonmedv/finder",
-  "homepage": "https://github.com/antonmedv/finder",
-  "author": "Anton Medvedev <anton@medv.io>",
+  "description": "CSS Selector Generator [Forked from @medv/finder]",
+  "repository": "ssivov/finder",
+  "homepage": "https://github.com/ssivov/finder",
+  "author": "Sviatoslav Sivov",
   "license": "MIT",
   "keywords": [
     "css",
